@@ -65,6 +65,45 @@ func main() {
 			Usage:    "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
 			Value:    "info",
 		},
+
+		// Build Flags
+
+		&cli.IntFlag{
+			EnvVars:  []string{"PARAMETER_NUMBER", "BUILD_SUMMARY_NUMBER", "VELA_BUILD_NUMBER"},
+			FilePath: "/vela/parameters/build-summary/number,/vela/secrets/build-summary/number",
+			Name:     "build.number",
+			Usage:    "provide the number for the build",
+		},
+
+		// Config Flags
+
+		&cli.StringFlag{
+			EnvVars:  []string{"PARAMETER_SERVER", "BUILD_SUMMARY_SERVER", "VELA_ADDR"},
+			FilePath: "/vela/parameters/build-summary/server,/vela/secrets/build-summary/server",
+			Name:     "config.server",
+			Usage:    "Vela server to authenticate with",
+		},
+		&cli.StringFlag{
+			EnvVars:  []string{"PARAMETER_TOKEN", "BUILD_SUMMARY_TOKEN", "VELA_NETRC_PASSWORD"},
+			FilePath: "/vela/parameters/build-summary/token,/vela/secrets/build-summary/token",
+			Name:     "config.token",
+			Usage:    "user token to authenticate with the Vela server",
+		},
+
+		// Repo Flags
+
+		&cli.StringFlag{
+			EnvVars:  []string{"PARAMETER_ORG", "BUILD_SUMMARY_ORG", "VELA_REPO_ORG"},
+			FilePath: "/vela/parameters/build-summary/org,/vela/secrets/build-summary/org",
+			Name:     "repo.org",
+			Usage:    "provide the organization name for the build",
+		},
+		&cli.StringFlag{
+			EnvVars:  []string{"PARAMETER_REPO", "BUILD_SUMMARY_REPO", "VELA_REPO_NAME"},
+			FilePath: "/vela/parameters/build-summary/repo,/vela/secrets/build-summary/repo",
+			Name:     "repo.name",
+			Usage:    "provide the repository name for the build",
+		},
 	}
 
 	err = app.Run(os.Args)
@@ -101,5 +140,32 @@ func run(c *cli.Context) error {
 		"registry": "https://hub.docker.com/r/target/vela-build-summary",
 	}).Info("Vela Build Summary Plugin")
 
-	return nil
+	// create the plugin
+	p := &Plugin{
+		// build configuration
+		Build: &Build{
+			Number: c.Int("build.number"),
+		},
+		// config configuration
+		Config: &Config{
+			AppName:    c.App.Name,
+			AppVersion: c.App.Version,
+			Server:     c.String("config.server"),
+			Token:      c.String("config.token"),
+		},
+		// repo configuration
+		Repo: &Repo{
+			Org:  c.String("repo.org"),
+			Name: c.String("repo.name"),
+		},
+	}
+
+	// validate the plugin
+	err := p.Validate()
+	if err != nil {
+		return err
+	}
+
+	// execute the plugin
+	return p.Exec()
 }
