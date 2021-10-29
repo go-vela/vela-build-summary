@@ -1,9 +1,9 @@
-# vela-influx
+# vela-build-summary
 
 [![license](https://img.shields.io/crates/l/gl.svg)](../LICENSE)
 [![GoDoc](https://godoc.org/github.com/go-vela/vela-build-summary?status.svg)](https://godoc.org/github.com/go-vela/vela-build-summary)
 [![Go Report Card](https://goreportcard.com/badge/go-vela/vela-build-summary)](https://goreportcard.com/report/go-vela/vela-build-summary)
-[![codecov](https://codecov.io/gh/go-vela/vela-build-summary/branch/master/graph/badge.svg)](https://codecov.io/gh/go-vela/vela-build-summary)
+[![codecov](https://codecov.io/gh/go-vela/vela-build-summary/branch/main/graph/badge.svg)](https://codecov.io/gh/go-vela/vela-build-summary)
 
 Vela plugin designed for creating a summary for a build.
 

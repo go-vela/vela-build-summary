@@ -113,7 +113,7 @@ make clean
 
 ```bash
 # push your code up to your fork
-git push fork master
+git push fork main
 ```
 
 * Open a pull request!
