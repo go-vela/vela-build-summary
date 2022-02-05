@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/dustin/go-humanize v1.0.0
-	github.com/go-vela/sdk-go v0.11.0
+	github.com/go-vela/sdk-go v0.12.0
 	github.com/go-vela/types v0.12.0
 	github.com/gosuri/uitable v0.0.4
 	github.com/joho/godotenv v1.4.0
@@ -20,7 +20,7 @@ require (
 	github.com/drone/envsubst v1.0.3 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/golang-jwt/jwt/v4 v4.1.0 // indirect
+	github.com/golang-jwt/jwt/v4 v4.2.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.9 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
@@ -28,6 +28,6 @@ require (
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/russross/blackfriday/v2 v2.0.1 // indirect
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
-	golang.org/x/sys v0.0.0-20210806184541-e5e7981a1069 // indirect
+	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
