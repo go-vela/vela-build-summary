@@ -9,40 +9,13 @@ import (
 	"bytes"
 	"fmt"
 	"sort"
-	"strings"
 	"time"
 
 	"github.com/dustin/go-humanize"
-	"github.com/go-vela/types/constants"
 	"github.com/go-vela/types/library"
 	"github.com/gosuri/uitable"
 	"github.com/sirupsen/logrus"
 )
-
-// stepDuration is a helper function to calculate the total duration
-// a step ran for in a more consumable, human readable format.
-func stepDuration(s *library.Step) string {
-	logrus.Debugf("calculating duration of step %s for build summary table", s.GetName())
-
-	// capture finished unix timestamp from step
-	f := time.Unix(s.GetFinished(), 0)
-	// capture started unix timestamp from step
-	st := time.Unix(s.GetStarted(), 0)
-
-	// check if step is in a pending or running state
-	if strings.EqualFold(s.GetStatus(), constants.StatusPending) ||
-		strings.EqualFold(s.GetStatus(), constants.StatusRunning) {
-		// set a default value to display for the step
-		f = time.Unix(time.Now().UTC().Unix(), 0)
-	}
-
-	// get the duration by subtracting the step started
-	// timestamp from the step finished timestamp.
-	d := f.Sub(st)
-
-	// return duration in a human readable form
-	return d.String()
-}
 
 // stepLines is a helper function to calculate the total lines of logs
 // a step produced by measuring the newlines (\n) in that log entry.
@@ -118,7 +91,7 @@ func stepRows(table *uitable.Table, logs *[]library.Log, steps *[]library.Step, 
 		// calculate duration based off the step timestamps
 		//
 		// nolint: gosec // ignore memory aliasing
-		duration := stepDuration(&s)
+		duration := s.Duration()
 
 		// calculate rate based off step duration and size
 		rate := fmt.Sprintf("%d B/s", stepRate(duration, size))

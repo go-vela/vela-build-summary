@@ -20,7 +20,7 @@ type Plugin struct {
 	Repo *Repo
 }
 
-// Exec formats and runs the commands for doing stuff.
+// Exec formats and runs the commands for creating a summary of the build.
 func (p *Plugin) Exec() error {
 	logrus.Debug("running plugin with provided configuration")
 

@@ -9,40 +9,13 @@ import (
 	"bytes"
 	"fmt"
 	"sort"
-	"strings"
 	"time"
 
 	"github.com/dustin/go-humanize"
-	"github.com/go-vela/types/constants"
 	"github.com/go-vela/types/library"
 	"github.com/gosuri/uitable"
 	"github.com/sirupsen/logrus"
 )
-
-// serviceDuration is a helper function to calculate the total duration
-// a service ran for in a more consumable, human readable format.
-func serviceDuration(s *library.Service) string {
-	logrus.Debugf("calculating duration of service %s for build summary table", s.GetName())
-
-	// capture finished unix timestamp from service
-	f := time.Unix(s.GetFinished(), 0)
-	// capture started unix timestamp from service
-	st := time.Unix(s.GetStarted(), 0)
-
-	// check if service is in a pending or running state
-	if strings.EqualFold(s.GetStatus(), constants.StatusPending) ||
-		strings.EqualFold(s.GetStatus(), constants.StatusRunning) {
-		// set a default value to display for the service
-		f = time.Unix(time.Now().UTC().Unix(), 0)
-	}
-
-	// get the duration by subtracting the service started
-	// timestamp from the service finished timestamp.
-	d := f.Sub(st)
-
-	// return duration in a human readable form
-	return d.String()
-}
 
 // serviceLines is a helper function to calculate the total lines of logs
 // a service produced by measuring the newlines (\n) in that log entry.
@@ -118,7 +91,7 @@ func serviceRows(table *uitable.Table, logs *[]library.Log, services *[]library.
 		// calculate duration based off the service timestamps
 		//
 		// nolint: gosec // ignore memory aliasing
-		duration := serviceDuration(&s)
+		duration := s.Duration()
 
 		// calculate rate based off service duration and size
 		rate := fmt.Sprintf("%d B/s", serviceRate(duration, size))

@@ -6,11 +6,9 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/dustin/go-humanize"
-	"github.com/go-vela/types/constants"
 	"github.com/go-vela/types/library"
 	"github.com/gosuri/uitable"
 	"github.com/sirupsen/logrus"
@@ -34,31 +32,6 @@ func (b *Build) Validate() error {
 	return nil
 }
 
-// buildDuration is a helper function to calculate the total duration
-// the build ran for in a more consumable, human readable format.
-func buildDuration(b *library.Build) string {
-	logrus.Debug("calculating duration of build for build summary table")
-
-	// capture finished unix timestamp from service
-	f := time.Unix(b.GetFinished(), 0)
-	// capture started unix timestamp from service
-	st := time.Unix(b.GetStarted(), 0)
-
-	// check if build is in a pending or running state
-	if strings.EqualFold(b.GetStatus(), constants.StatusPending) ||
-		strings.EqualFold(b.GetStatus(), constants.StatusRunning) {
-		// set a default value to display for the build
-		f = time.Unix(time.Now().UTC().Unix(), 0)
-	}
-
-	// get the duration by subtracting the build started
-	// timestamp from the build finished timestamp.
-	d := f.Sub(st)
-
-	// return duration in a human readable form
-	return d.String()
-}
-
 // buildRate is a helper function to calculate the total size of logs
 // a build produced over the total duration a build ran for.
 func buildRate(duration string, size uint64) int64 {
@@ -73,11 +46,11 @@ func buildRate(duration string, size uint64) int64 {
 }
 
 // buildRow is a helper function to produce a build row in the build summary table.
-func buildRow(table *uitable.Table, build *library.Build, buildLines *int, buildSize *uint64) {
+func buildRow(table *uitable.Table, b *library.Build, buildLines *int, buildSize *uint64) {
 	logrus.Debug("adding build information to build summary table")
 
 	// calculate duration based off the build timestamps
-	duration := buildDuration(build)
+	duration := b.Duration()
 
 	// calculate rate based off build duration and size
 	rate := fmt.Sprintf("%d B/s", buildRate(duration, *buildSize))
@@ -87,5 +60,5 @@ func buildRow(table *uitable.Table, build *library.Build, buildLines *int, build
 	// https://pkg.go.dev/github.com/gosuri/uitable?tab=doc#Table.AddRow
 	//
 	// nolint: lll // ignore line length due to parameters
-	table.AddRow("build", "", build.GetNumber(), build.GetStatus(), duration, *buildLines, humanize.Bytes(*buildSize), rate)
+	table.AddRow("build", "", b.GetNumber(), b.GetStatus(), duration, *buildLines, humanize.Bytes(*buildSize), rate)
 }
