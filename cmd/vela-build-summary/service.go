@@ -89,8 +89,6 @@ func serviceRows(table *uitable.Table, logs *[]library.Log, services *[]library.
 		size := serviceSize(&s, logs)
 
 		// calculate duration based off the service timestamps
-		//
-		// nolint: gosec // ignore memory aliasing
 		duration := s.Duration()
 
 		// calculate rate based off service duration and size
