@@ -89,8 +89,6 @@ func stepRows(table *uitable.Table, logs *[]library.Log, steps *[]library.Step, 
 		size := stepSize(&s, logs)
 
 		// calculate duration based off the step timestamps
-		//
-		// nolint: gosec // ignore memory aliasing
 		duration := s.Duration()
 
 		// calculate rate based off step duration and size
