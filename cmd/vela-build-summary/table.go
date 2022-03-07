@@ -19,8 +19,6 @@ import (
 // build, such as name, number, status and duration of runtime. Also in the
 // table are some more fine grained metrics on log size and rate of logs
 // produced throughout the lifecycle of each resource.
-//
-// nolint: lll // ignore line length due to parameters
 func table(build *library.Build, logs *[]library.Log, services *[]library.Service, steps *[]library.Step) error {
 	logrus.Debug("creating table for build summary")
 
@@ -59,8 +57,6 @@ func table(build *library.Build, logs *[]library.Log, services *[]library.Servic
 	// add a separation row to the table with the specified values
 	//
 	// https://pkg.go.dev/github.com/gosuri/uitable?tab=doc#Table.AddRow
-	//
-	// nolint: lll // ignore line length due to parameters
 	table.AddRow("----------", "--------------------", "----------", "----------", "----------", "----------", "---------------", "---------------")
 
 	// add the build row to the table

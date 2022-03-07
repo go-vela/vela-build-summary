@@ -69,8 +69,6 @@ func stepReverse(s []library.Step) []library.Step {
 }
 
 // stepRows is a helper function to produce step rows in the build summary table.
-//
-// nolint: lll // ignore line length due to parameters
 func stepRows(table *uitable.Table, logs *[]library.Log, steps *[]library.Step, buildLines *int, buildSize *uint64) {
 	logrus.Debug("adding step information to build summary table")
 
@@ -103,8 +101,6 @@ func stepRows(table *uitable.Table, logs *[]library.Log, steps *[]library.Step, 
 		// add a row to the table with the specified values
 		//
 		// https://pkg.go.dev/github.com/gosuri/uitable?tab=doc#Table.AddRow
-		//
-		// nolint: lll // ignore line length due to parameters
 		table.AddRow("step", s.GetName(), s.GetNumber(), s.GetStatus(), duration, lines, humanize.Bytes(size), rate)
 	}
 }
