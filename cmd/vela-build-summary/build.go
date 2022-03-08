@@ -58,7 +58,5 @@ func buildRow(table *uitable.Table, b *library.Build, buildLines *int, buildSize
 	// add a row to the table with the specified values
 	//
 	// https://pkg.go.dev/github.com/gosuri/uitable?tab=doc#Table.AddRow
-	//
-	// nolint: lll // ignore line length due to parameters
 	table.AddRow("build", "", b.GetNumber(), b.GetStatus(), duration, *buildLines, humanize.Bytes(*buildSize), rate)
 }

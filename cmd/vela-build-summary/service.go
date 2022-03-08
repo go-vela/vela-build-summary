@@ -69,8 +69,6 @@ func serviceReverse(s []library.Service) []library.Service {
 }
 
 // serviceRows is a helper function to produce service rows in the build summary table.
-//
-// nolint: lll // ignore line length due to parameters
 func serviceRows(table *uitable.Table, logs *[]library.Log, services *[]library.Service, buildLines *int, buildSize *uint64) {
 	logrus.Debug("adding service information to build summary table")
 
@@ -103,8 +101,6 @@ func serviceRows(table *uitable.Table, logs *[]library.Log, services *[]library.
 		// add a row to the table with the specified values
 		//
 		// https://pkg.go.dev/github.com/gosuri/uitable?tab=doc#Table.AddRow
-		//
-		// nolint: lll // ignore line length due to parameters
 		table.AddRow("service", s.GetName(), s.GetNumber(), s.GetStatus(), duration, lines, humanize.Bytes(size), rate)
 	}
 }
