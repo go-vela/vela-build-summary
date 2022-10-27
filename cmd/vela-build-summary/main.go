@@ -136,7 +136,7 @@ func run(c *cli.Context) error {
 
 	logrus.WithFields(logrus.Fields{
 		"code":     "https://github.com/go-vela/vela-build-summary",
-		"docs":     "https://go-vela.github.io/docs/plugins/registry/build-summary",
+		"docs":     "https://go-vela.github.io/docs/plugins/registry/pipeline/build-summary",
 		"registry": "https://hub.docker.com/r/target/vela-build-summary",
 	}).Info("Vela Build Summary Plugin")
 
