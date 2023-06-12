@@ -3,7 +3,7 @@ module github.com/go-vela/vela-build-summary
 go 1.18
 
 require (
-	github.com/Masterminds/semver/v3 v3.1.1
+	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/dustin/go-humanize v1.0.1
 	github.com/go-vela/sdk-go v0.17.0
 	github.com/go-vela/types v0.17.0
