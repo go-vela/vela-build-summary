@@ -69,7 +69,7 @@ func (p *Plugin) Exec() error {
 	// send API call to capture a list of build logs
 	//
 	// https://pkg.go.dev/github.com/go-vela/sdk-go/vela?tab=doc#BuildService.GetLogs
-	logs, _, err := client.Build.GetLogs(p.Repo.Org, p.Repo.Name, p.Build.Number)
+	logs, _, err := client.Build.GetLogs(p.Repo.Org, p.Repo.Name, p.Build.Number, nil)
 	if err != nil {
 		return err
 	}
