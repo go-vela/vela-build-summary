@@ -76,12 +76,12 @@ func stepRows(table *uitable.Table, logs *[]library.Log, steps *[]library.Step, 
 
 		// calculate lines based off the step logs
 		//
-		// nolint: gosec // ignore memory aliasing
+		//nolint:gosec // ignore memory aliasing
 		lines := stepLines(&s, logs)
 
 		// calculate size based off the step logs
 		//
-		// nolint: gosec // ignore memory aliasing
+		//nolint:gosec // ignore memory aliasing
 		size := stepSize(&s, logs)
 
 		// calculate duration based off the step timestamps
