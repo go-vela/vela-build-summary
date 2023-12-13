@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// nolint: dupl // ignore similar code with step
+//nolint:dupl // ignore similar code with step
 package main
 
 import (
@@ -76,12 +76,12 @@ func serviceRows(table *uitable.Table, logs *[]library.Log, services *[]library.
 
 		// calculate lines based off the service logs
 		//
-		// nolint: gosec // ignore memory aliasing
+		//nolint:gosec // ignore memory aliasing
 		lines := serviceLines(&s, logs)
 
 		// calculate size based off the service logs
 		//
-		// nolint: gosec // ignore memory aliasing
+		//nolint:gosec // ignore memory aliasing
 		size := serviceSize(&s, logs)
 
 		// calculate duration based off the service timestamps
