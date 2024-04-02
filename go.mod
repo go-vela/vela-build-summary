@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/dustin/go-humanize v1.0.1
-	github.com/go-vela/sdk-go v0.23.2
+	github.com/go-vela/sdk-go v0.23.3
 	github.com/go-vela/types v0.23.3
 	github.com/gosuri/uitable v0.0.4
 	github.com/joho/godotenv v1.5.1
@@ -24,7 +24,7 @@ require (
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.9 // indirect
-	github.com/mattn/go-isatty v0.0.19 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
