@@ -1,8 +1,6 @@
 module github.com/go-vela/vela-build-summary
 
-go 1.22.0
-
-toolchain go1.22.5
+go 1.22.5
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
