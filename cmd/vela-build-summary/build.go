@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/dustin/go-humanize"
-	"github.com/go-vela/types/library"
+	api "github.com/go-vela/server/api/types"
 	"github.com/gosuri/uitable"
 	"github.com/sirupsen/logrus"
 )
@@ -44,7 +44,7 @@ func buildRate(duration string, size uint64) int64 {
 }
 
 // buildRow is a helper function to produce a build row in the build summary table.
-func buildRow(table *uitable.Table, b *library.Build, buildLines *int, buildSize *uint64) {
+func buildRow(table *uitable.Table, b *api.Build, buildLines *int, buildSize *uint64) {
 	logrus.Debug("adding build information to build summary table")
 
 	// calculate duration based off the build timestamps

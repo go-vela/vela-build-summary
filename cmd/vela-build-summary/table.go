@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 
+	api "github.com/go-vela/server/api/types"
 	"github.com/go-vela/types/library"
 	"github.com/gosuri/uitable"
 	"github.com/sirupsen/logrus"
@@ -17,7 +18,7 @@ import (
 // build, such as name, number, status and duration of runtime. Also in the
 // table are some more fine grained metrics on log size and rate of logs
 // produced throughout the lifecycle of each resource.
-func table(build *library.Build, logs *[]library.Log, services *[]library.Service, steps *[]library.Step) error {
+func table(build *api.Build, logs *[]library.Log, services *[]library.Service, steps *[]library.Step) error {
 	logrus.Debug("creating table for build summary")
 
 	// create a new table
