@@ -3,9 +3,9 @@
 package main
 
 import (
-	"github.com/go-vela/sdk-go/vela"
-
 	"github.com/sirupsen/logrus"
+
+	"github.com/go-vela/sdk-go/vela"
 )
 
 // Plugin represents the configuration loaded for the plugin.

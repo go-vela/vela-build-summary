@@ -10,14 +10,15 @@ import (
 	"time"
 
 	"github.com/dustin/go-humanize"
-	"github.com/go-vela/types/library"
 	"github.com/gosuri/uitable"
 	"github.com/sirupsen/logrus"
+
+	api "github.com/go-vela/server/api/types"
 )
 
 // stepLines is a helper function to calculate the total lines of logs
 // a step produced by measuring the newlines (\n) in that log entry.
-func stepLines(s *library.Step, logs *[]library.Log) int {
+func stepLines(s *api.Step, logs *[]api.Log) int {
 	logrus.Debugf("calculating lines of logs for step %s for build summary table", s.GetName())
 
 	// create a variable to track the lines of logs for the step
@@ -55,7 +56,7 @@ func stepRate(duration string, size uint64) int64 {
 
 // stepReverse is a helper function to sort the steps based off the
 // step number and then flip the order they get displayed in.
-func stepReverse(s []library.Step) []library.Step {
+func stepReverse(s []api.Step) []api.Step {
 	logrus.Debug("reversing order of steps for build summary table")
 
 	// sort the list of steps based off the step number
@@ -67,7 +68,7 @@ func stepReverse(s []library.Step) []library.Step {
 }
 
 // stepRows is a helper function to produce step rows in the build summary table.
-func stepRows(table *uitable.Table, logs *[]library.Log, steps *[]library.Step, buildLines *int, buildSize *uint64) {
+func stepRows(table *uitable.Table, logs *[]api.Log, steps *[]api.Step, buildLines *int, buildSize *uint64) {
 	logrus.Debug("adding step information to build summary table")
 
 	// iterate through all steps in the list
@@ -76,12 +77,12 @@ func stepRows(table *uitable.Table, logs *[]library.Log, steps *[]library.Step, 
 
 		// calculate lines based off the step logs
 		//
-		//nolint:gosec // ignore memory aliasing
+
 		lines := stepLines(&s, logs)
 
 		// calculate size based off the step logs
 		//
-		//nolint:gosec // ignore memory aliasing
+
 		size := stepSize(&s, logs)
 
 		// calculate duration based off the step timestamps
@@ -105,7 +106,7 @@ func stepRows(table *uitable.Table, logs *[]library.Log, steps *[]library.Step, 
 
 // stepSize is a helper function to calculate the total size of logs
 // a step produced by measuring the data in that log entry.
-func stepSize(s *library.Step, logs *[]library.Log) uint64 {
+func stepSize(s *api.Step, logs *[]api.Log) uint64 {
 	logrus.Debugf("calculating size of logs for step %s for build summary table", s.GetName())
 
 	// create a variable to track the size of logs for the step

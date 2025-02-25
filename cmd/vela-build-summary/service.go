@@ -10,14 +10,15 @@ import (
 	"time"
 
 	"github.com/dustin/go-humanize"
-	"github.com/go-vela/types/library"
 	"github.com/gosuri/uitable"
 	"github.com/sirupsen/logrus"
+
+	api "github.com/go-vela/server/api/types"
 )
 
 // serviceLines is a helper function to calculate the total lines of logs
 // a service produced by measuring the newlines (\n) in that log entry.
-func serviceLines(s *library.Service, logs *[]library.Log) int {
+func serviceLines(s *api.Service, logs *[]api.Log) int {
 	logrus.Debugf("calculating lines of logs for service %s for build summary table", s.GetName())
 
 	// create a variable to track the lines of logs for the service
@@ -55,7 +56,7 @@ func serviceRate(duration string, size uint64) int64 {
 
 // serviceReverse is a helper function to sort the services based off the
 // service number and then flip the order they get displayed in.
-func serviceReverse(s []library.Service) []library.Service {
+func serviceReverse(s []api.Service) []api.Service {
 	logrus.Debug("reversing order of services for build summary table")
 
 	// sort the list of services based off the service number
@@ -67,7 +68,7 @@ func serviceReverse(s []library.Service) []library.Service {
 }
 
 // serviceRows is a helper function to produce service rows in the build summary table.
-func serviceRows(table *uitable.Table, logs *[]library.Log, services *[]library.Service, buildLines *int, buildSize *uint64) {
+func serviceRows(table *uitable.Table, logs *[]api.Log, services *[]api.Service, buildLines *int, buildSize *uint64) {
 	logrus.Debug("adding service information to build summary table")
 
 	// iterate through all services in the list
@@ -76,12 +77,12 @@ func serviceRows(table *uitable.Table, logs *[]library.Log, services *[]library.
 
 		// calculate lines based off the service logs
 		//
-		//nolint:gosec // ignore memory aliasing
+
 		lines := serviceLines(&s, logs)
 
 		// calculate size based off the service logs
 		//
-		//nolint:gosec // ignore memory aliasing
+
 		size := serviceSize(&s, logs)
 
 		// calculate duration based off the service timestamps
@@ -105,7 +106,7 @@ func serviceRows(table *uitable.Table, logs *[]library.Log, services *[]library.
 
 // serviceSize is a helper function to calculate the total size of logs
 // a service produced by measuring the data in that log entry.
-func serviceSize(s *library.Service, logs *[]library.Log) uint64 {
+func serviceSize(s *api.Service, logs *[]api.Log) uint64 {
 	logrus.Debugf("calculating size of logs for service %s for build summary table", s.GetName())
 
 	// create a variable to track the size of logs for the service

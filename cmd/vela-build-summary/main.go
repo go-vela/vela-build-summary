@@ -6,15 +6,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-
 	"time"
-
-	"github.com/go-vela/vela-build-summary/version"
 
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 
 	_ "github.com/joho/godotenv/autoload"
+
+	"github.com/go-vela/vela-build-summary/version"
 )
 
 func main() {
