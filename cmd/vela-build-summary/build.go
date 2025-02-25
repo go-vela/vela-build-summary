@@ -7,9 +7,10 @@ import (
 	"time"
 
 	"github.com/dustin/go-humanize"
-	api "github.com/go-vela/server/api/types"
 	"github.com/gosuri/uitable"
 	"github.com/sirupsen/logrus"
+
+	api "github.com/go-vela/server/api/types"
 )
 
 // Build represents the plugin configuration for build information.
