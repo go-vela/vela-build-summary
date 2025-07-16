@@ -3,13 +3,15 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"net/mail"
 	"os"
-	"time"
+	"strings"
 
 	"github.com/sirupsen/logrus"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 
 	_ "github.com/joho/godotenv/autoload"
 
@@ -30,87 +32,117 @@ func main() {
 	fmt.Fprintf(os.Stdout, "%s\n", string(bytes))
 
 	// create new CLI application
-	app := cli.NewApp()
-
 	// Plugin Information
-
-	app.Name = "vela-build-summary"
-	app.HelpName = "vela-build-summary"
-	app.Usage = "Vela Build Summary plugin for capturing a summary of a build"
-	app.Copyright = "Copyright 2021 Target Brands, Inc. All rights reserved."
-	app.Authors = []*cli.Author{
-		{
-			Name:  "Vela Admins",
-			Email: "vela@target.com",
+	cmd := cli.Command{
+		Name:      "vela-build-summary",
+		Usage:     "Vela Build Summary plugin for capturing a summary of a build",
+		Copyright: "Copyright 2021 Target Brands, Inc. All rights reserved.",
+		Authors: []any{
+			&mail.Address{
+				Name:    "Vela Admins",
+				Address: "vela@target.com",
+			},
 		},
+		Version: v.Semantic(),
+		Action:  run,
 	}
-
-	// Plugin Metadata
-
-	app.Action = run
-	app.Compiled = time.Now()
-	app.Version = v.Semantic()
-
 	// Plugin Flags
 
-	app.Flags = []cli.Flag{
+	cmd.Flags = []cli.Flag{
 
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_LOG_LEVEL", "BUILD_SUMMARY_LOG_LEVEL"},
-			FilePath: "/vela/parameters/build-summary/log_level,/vela/secrets/build-summary/log_level",
-			Name:     "log.level",
-			Usage:    "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
-			Value:    "info",
+			Name:  "log.level",
+			Usage: "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
+			Value: "info",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_LOG_LEVEL"),
+				cli.EnvVar("BUILD_SUMMARY_LOG_LEVEL"),
+				cli.File("/vela/parameters/build-summary/log_level"),
+				cli.File("/vela/secrets/build-summary/log_level"),
+			),
 		},
 
 		// Build Flags
 
 		&cli.IntFlag{
-			EnvVars:  []string{"PARAMETER_NUMBER", "BUILD_SUMMARY_NUMBER", "VELA_BUILD_NUMBER"},
-			FilePath: "/vela/parameters/build-summary/number,/vela/secrets/build-summary/number",
-			Name:     "build.number",
-			Usage:    "provide the number for the build",
+			Name:  "build.number",
+			Usage: "provide the number for the build",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_NUMBER"),
+				cli.EnvVar("BUILD_SUMMARY_NUMBER"),
+				cli.EnvVar("VELA_BUILD_NUMBER"),
+				cli.File("/vela/parameters/build-summary/number"),
+				cli.File("/vela/secrets/build-summary/number"),
+			),
 		},
 
 		// Config Flags
 
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_SERVER", "BUILD_SUMMARY_SERVER", "VELA_ADDR"},
-			FilePath: "/vela/parameters/build-summary/server,/vela/secrets/build-summary/server",
-			Name:     "config.server",
-			Usage:    "Vela server to authenticate with",
+			Name:  "config.server",
+			Usage: "Vela server to authenticate with",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_SERVER"),
+				cli.EnvVar("BUILD_SUMMARY_SERVER"),
+				cli.EnvVar("VELA_ADDR"),
+				cli.File("/vela/parameters/build-summary/server"),
+				cli.File("/vela/secrets/build-summary/server"),
+			),
+			Required: true,
+			Action: func(_ context.Context, _ *cli.Command, v string) error {
+				if strings.HasSuffix(v, "/") {
+					return fmt.Errorf("invalid server address provided: address must not have trailing slash")
+				}
+
+				return nil
+			},
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_TOKEN", "BUILD_SUMMARY_TOKEN", "VELA_NETRC_PASSWORD"},
-			FilePath: "/vela/parameters/build-summary/token,/vela/secrets/build-summary/token",
-			Name:     "config.token",
-			Usage:    "user token to authenticate with the Vela server",
+			Name:  "config.token",
+			Usage: "user token to authenticate with the Vela server",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_TOKEN"),
+				cli.EnvVar("BUILD_SUMMARY_TOKEN"),
+				cli.EnvVar("VELA_NETRC_PASSWORD"),
+				cli.File("/vela/parameters/build-summary/token"),
+				cli.File("/vela/secrets/build-summary/token"),
+			),
 		},
 
 		// Repo Flags
 
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_ORG", "BUILD_SUMMARY_ORG", "VELA_REPO_ORG"},
-			FilePath: "/vela/parameters/build-summary/org,/vela/secrets/build-summary/org",
-			Name:     "repo.org",
-			Usage:    "provide the organization name for the build",
+			Name:  "repo.org",
+			Usage: "provide the organization name for the build",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_ORG"),
+				cli.EnvVar("BUILD_SUMMARY_ORG"),
+				cli.EnvVar("VELA_REPO_ORG"),
+				cli.File("/vela/parameters/build-summary/org"),
+				cli.File("/vela/parameters/build-summary/org"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_REPO", "BUILD_SUMMARY_REPO", "VELA_REPO_NAME"},
-			FilePath: "/vela/parameters/build-summary/repo,/vela/secrets/build-summary/repo",
-			Name:     "repo.name",
-			Usage:    "provide the repository name for the build",
+			Name:  "repo.name",
+			Usage: "provide the repository name for the build",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_REPO"),
+				cli.EnvVar("BUILD_SUMMARY_REPO"),
+				cli.EnvVar("VELA_REPO_NAME"),
+				cli.File("/vela/parameters/build-summary/repo"),
+				cli.File("/vela/parameters/build-summary/repo"),
+			),
 		},
 	}
 
-	err = app.Run(os.Args)
+	err = cmd.Run(context.Background(), os.Args)
 	if err != nil {
 		logrus.Fatal(err)
 	}
 }
 
 // run executes the plugin based off the configuration provided.
-func run(c *cli.Context) error {
+func run(_ context.Context, c *cli.Command) error {
 	// set the log level for the plugin
 	switch c.String("log.level") {
 	case "t", "trace", "Trace", "TRACE":
@@ -145,8 +177,8 @@ func run(c *cli.Context) error {
 		},
 		// config configuration
 		Config: &Config{
-			AppName:    c.App.Name,
-			AppVersion: c.App.Version,
+			AppName:    c.Name,
+			AppVersion: c.Version,
 			Server:     c.String("config.server"),
 			Token:      c.String("config.token"),
 		},
