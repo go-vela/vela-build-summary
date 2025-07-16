@@ -142,7 +142,7 @@ func main() {
 }
 
 // run executes the plugin based off the configuration provided.
-func run(ctx context.Context, c *cli.Command) error {
+func run(_ context.Context, c *cli.Command) error {
 	// set the log level for the plugin
 	switch c.String("log.level") {
 	case "t", "trace", "Trace", "TRACE":
